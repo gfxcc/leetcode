@@ -2,7 +2,7 @@
 Recursive! Recursive! Recursive!  
 
 > pre/in/post order traversal   
-https://yongblog.us/2019/05/04/binary-tree-traversal-updated/  
+https://yonglife.com/2019/05/04/binary-tree-traversal-updated/
 
 > Recursive to Non-recursive   
 

@@ -1240,8 +1240,6 @@ Maintain a state while sliding window
 
 ### Binary search
 
-[https://yongblog.us/2017/01/22/Binary-Search/](https://yongblog.us/2017/01/22/Binary-Search/)
-
 > Ideal  
 
 1. Binary search can be used to guess answer in a known range.  
@@ -1631,7 +1629,7 @@ O(1) to push and pop at end.
 Recursive! Recursive! Recursive!  
 
 > pre/in/post order traversal   
-https://yongblog.us/2019/05/04/binary-tree-traversal-updated/  
+https://yonglife.com/2019/05/04/binary-tree-traversal-updated/
 
 > Recursive to Non-recursive   
 
@@ -2942,7 +2940,7 @@ class BIT:
 
 ### Cycle Detection
 
-https://yongblog.us/2020/08/22/Detect-Cycle-in-a-Graph/
+https://yonglife.com/2020/08/22/Detect-Cycle-in-a-Graph/
 
 - Undirected Graph
 
@@ -3211,9 +3209,8 @@ def topo_sort(n: int, edges: List[List[int]]):
 
 ### Dijkstra_Bellman-Ford
 
-[https://yongblog.us/2019/06/01/Graph-Dijkstra/](https://yongblog.us/2019/06/01/Graph-Dijkstra/)
-
-https://yongblog.us/2019/06/01/Graph-Bellman-Ford/
+[Graph-Dijkstra](https://yonglife.com/2019/06/01/Graph-Dijkstra/)
+[Bellman-Ford](https://yonglife.com/2019/06/01/Graph-Bellman-Ford/)
 
 - 1514. Path with Maximum Probability
 
