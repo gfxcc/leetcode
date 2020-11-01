@@ -2942,14 +2942,9 @@ class BIT:
 
 https://yonglife.com/2020/08/22/Detect-Cycle-in-a-Graph/
 
-- Undirected Graph
-
-- Directed Graph
-
-	- 207. Course Schedule
-
 ### Euler path
 
+```python
 class Solution:  
     def EulerPath(self, tickets: List[List[str]]) -> List[str]:  
         graph = defaultdict(list)  
@@ -2964,6 +2959,7 @@ class Solution:
             ret.append(cur)  
         dfs('JFK')  
         return ret[::-1]
+```
 
 - 332. Reconstruct Itinerary
 

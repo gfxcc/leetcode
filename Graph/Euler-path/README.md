@@ -1,4 +1,5 @@
 
+```python
 class Solution:  
     def EulerPath(self, tickets: List[List[str]]) -> List[str]:  
         graph = defaultdict(list)  
@@ -13,4 +14,5 @@ class Solution:
             ret.append(cur)  
         dfs('JFK')  
         return ret[::-1]
+```
 
