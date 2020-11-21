@@ -25,9 +25,12 @@ class File:
         self._name = name.replace('-', ' ')
     
     def write(self, path):
+        def filename_to_disk(filename):
+            return filename.replace(' ', '_')
+
         self._normalize_code_block()
 
-        filename = os.path.join(path, self.name)
+        filename = os.path.join(path, filename_to_disk(self.name))
         logging.info(f'creating file {filename}')
         with open(filename, 'w') as f:
             f.writelines([self.name] + self.content)
