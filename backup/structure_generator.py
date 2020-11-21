@@ -1,4 +1,4 @@
-#! /usr/bin/env python3.8
+#! /usr/bin/env python3.9
 from __future__ import annotations
 
 import os
@@ -16,13 +16,21 @@ class File:
         self.name = name
         self.content = []
     
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name: str):
+        self._name = name.replace('-', ' ')
+    
     def write(self, path):
         self._normalize_code_block()
 
         filename = os.path.join(path, self.name)
         logging.info(f'creating file {filename}')
         with open(filename, 'w') as f:
-            f.writelines(self.content)
+            f.writelines([self.name] + self.content)
         logging.info('done')
     
     def _normalize_code_block(self):
@@ -56,7 +64,10 @@ class Section:
     def write_to_disk(self, path: str):
         cur_path = os.path.join(path, self.name)
         logging.info(f'creating dir {cur_path}')
-        os.mkdir(cur_path)
+        try:
+            os.mkdir(cur_path)
+        except FileExistsError:
+            pass
         logging.info('done')
 
         self.readme.write(cur_path)
@@ -114,4 +125,4 @@ if __name__ == "__main__":
             raise RuntimeError('...')
     
     root_section = stack[0]
-    root_section.write_to_disk(os.path.abspath(OUTPUT_PATH))
+    [sub_sec.write_to_disk(OUTPUT_PATH) for sub_sec in root_section.subsections]

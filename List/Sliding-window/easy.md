@@ -1,4 +1,4 @@
-
+easy.md
 	1. Dictionary, Dictionary, Dictionary  
 	2. Prefix_sum
 

@@ -1,4 +1,4 @@
-
+README.md
 [MIT 6.006 Introduction to Algorithms, Fall 2011]([https://www.youtube.com/playlist?list=PL3P3cZGn6p661AmJdHafLMLzPxy5CXy-i](https://www.youtube.com/playlist?list=PL3P3cZGn6p661AmJdHafLMLzPxy5CXy-i))
 
 > Idea  
