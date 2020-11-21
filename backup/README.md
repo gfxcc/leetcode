@@ -7,3 +7,10 @@ File for [MindNote](https://apps.apple.com/us/app/mindnode-mind-map/id1289197285
 
 A utility script which generate a generic directory structure from auto-generated markdown file.
 Directory `LeetCode` here is the output from this utility.
+
+# build
+Regenerate markdown files
+
+```
+make build
+```
