@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LeetCode Roadmap</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <aside class="sidebar" aria-label="Topic navigation">
+      <div class="brand">
+        <div class="brand-mark">LC</div>
+        <div>
+          <h1>LeetCode Roadmap</h1>
+          <p id="generatedMeta">Local notes</p>
+        </div>
+      </div>
+
+      <label class="search">
+        <span>Search</span>
+        <input id="searchInput" type="search" placeholder="problem, pattern, topic">
+      </label>
+
+      <nav id="topicNav" class="topic-nav"></nav>
+    </aside>
+
+    <main class="workspace">
+      <section class="summary" aria-label="Repository summary">
+        <div>
+          <p class="eyebrow">Algorithm Study System</p>
+          <h2>Find the pattern, then the problem.</h2>
+        </div>
+        <div class="stats" id="stats"></div>
+      </section>
+
+      <section class="controls" aria-label="Section filter">
+        <select id="sectionSelect" aria-label="Section filter"></select>
+      </section>
+
+      <section class="content-shell">
+        <section class="note-list" aria-label="Notes">
+          <div class="list-header">
+            <h3 id="listTitle">All Notes</h3>
+            <span id="resultCount"></span>
+          </div>
+          <div id="noteList"></div>
+        </section>
+
+        <article class="reader" id="reader" aria-live="polite"></article>
+      </section>
+    </main>
+
+    <script type="module">
+      const assetVersion = Date.now();
+      const loadScript = (file) =>
+        new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = `${file}?v=${assetVersion}`;
+          script.onload = resolve;
+          script.onerror = reject;
+          document.body.appendChild(script);
+        });
+
+      for (const file of ["data.js", "app.js"]) {
+        await loadScript(file);
+      }
+    </script>
+  </body>
+</html>

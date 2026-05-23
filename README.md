@@ -1,3 +1,73 @@
+# LeetCode Roadmap
+
+This repository stores LeetCode and algorithm notes as Markdown files grouped by topic. A static browser UI is available in `site/` for easier reading, searching, and navigation.
+
+## Website
+
+Generate the site data from the Markdown notes:
+
+```bash
+python3 site/build_site.py
+```
+
+Start a local server:
+
+```bash
+cd site
+python3 -m http.server 8000
+```
+
+Open:
+
+```text
+http://127.0.0.1:8000/
+```
+
+The page loads `site/data.js` and `site/app.js` with a fresh cache key on each load, so a browser refresh picks up the latest generated files.
+
+## GitHub Pages Hosting
+
+This repo includes a GitHub Actions workflow at `.github/workflows/pages.yml` that publishes the static site for free with GitHub Pages.
+
+After pushing this repository to GitHub, enable Pages once:
+
+1. Open the repository on GitHub.
+2. Go to `Settings` -> `Pages`.
+3. Under `Build and deployment`, set `Source` to `GitHub Actions`.
+4. Push to `main`, or run the `Deploy GitHub Pages` workflow manually from the `Actions` tab.
+
+The workflow regenerates `site/data.js` from the Markdown notes and deploys the `site/` folder. The public URL will look like:
+
+```text
+https://<github-username>.github.io/<repository-name>/
+```
+
+## Adding Notes
+
+Add Markdown files under one of the main content roots:
+
+- `Dynamic-programming/`
+- `Graph/`
+- `List/`
+- `Tree/`
+- `Union-find/`
+
+Use `README.md` for a topic or subtopic overview. Use problem filenames like:
+
+```text
+1234._Problem_Name.md
+```
+
+After adding or editing notes, regenerate the site data:
+
+```bash
+python3 site/build_site.py
+```
+
+Then refresh the browser.
+
+## Current Structure
+
 ```
 ../Dynamic-programming
 |-- Bitmask
@@ -66,7 +136,7 @@
 |-- Euler-path
 |   |-- 332._Reconstruct_Itinerary.md
 |   `-- README.md
-|-- Floydâ\200\223Warshall
+|-- Floydï¿½\200\223Warshall
 |   |-- 399._Evaluate_Division.md
 |   `-- README.md
 |-- Minimal-Spinning-Tree
