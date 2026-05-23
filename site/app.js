@@ -19,6 +19,7 @@ const resultCount = document.querySelector("#resultCount");
 const generatedMeta = document.querySelector("#generatedMeta");
 
 const byId = new Map(notes.map((note) => [note.id, note]));
+let isRestoringUrl = false;
 
 function unique(values) {
   return [...new Set(values)].sort((a, b) => a.localeCompare(b));
@@ -52,11 +53,46 @@ function renderInline(text) {
     .replace(/\*([^*]+)\*/g, "<em>$1</em>");
 }
 
+function highlightCode(source, language) {
+  if (language !== "python" && language !== "py") {
+    return escapeHtml(source);
+  }
+
+  return source
+    .split("\n")
+    .map((line) => highlightPythonLine(line))
+    .join("\n");
+}
+
+function highlightPythonCodeSegment(segment) {
+  return escapeHtml(segment)
+    .replace(/\b(class|def|return|if|elif|else|for|while|in|not|and|or|import|from|as|with|try|except|finally|lambda|yield|None|True|False)\b/g, '<span class="tok-keyword">$1</span>')
+    .replace(/\b(self|List|Dict|Set|Tuple|Counter|defaultdict|deque|math|collections)\b/g, '<span class="tok-builtin">$1</span>')
+    .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="tok-number">$1</span>');
+}
+
+function highlightPythonLine(line) {
+  const html = [];
+  let index = 0;
+  const tokenPattern = /("[^"\\]*(?:\\.[^"\\]*)*"|'[^'\\]*(?:\\.[^'\\]*)*'|#.*$)/g;
+  for (const match of line.matchAll(tokenPattern)) {
+    html.push(highlightPythonCodeSegment(line.slice(index, match.index)));
+    const token = match[0];
+    const className = token.startsWith("#") ? "tok-comment" : "tok-string";
+    html.push(`<span class="${className}">${escapeHtml(token)}</span>`);
+    index = match.index + token.length;
+    if (token.startsWith("#")) break;
+  }
+  html.push(highlightPythonCodeSegment(line.slice(index)));
+  return html.join("");
+}
+
 function renderMarkdown(markdown) {
   const lines = markdown.replace(/\r\n/g, "\n").split("\n");
   const html = [];
   let inCode = false;
   let code = [];
+  let codeLanguage = "";
   let inList = false;
 
   function closeList() {
@@ -72,12 +108,15 @@ function renderMarkdown(markdown) {
 
     if (trimmed.startsWith("```")) {
       if (inCode) {
-        html.push(`<pre><code>${escapeHtml(code.join("\n"))}</code></pre>`);
+        const languageClass = codeLanguage ? ` class="language-${escapeHtml(codeLanguage)}"` : "";
+        html.push(`<pre><code${languageClass}>${highlightCode(code.join("\n"), codeLanguage)}</code></pre>`);
         code = [];
+        codeLanguage = "";
         inCode = false;
       } else {
         closeList();
         inCode = true;
+        codeLanguage = trimmed.slice(3).trim().split(/\s+/)[0].toLowerCase();
       }
       continue;
     }
@@ -122,7 +161,8 @@ function renderMarkdown(markdown) {
 
   closeList();
   if (inCode) {
-    html.push(`<pre><code>${escapeHtml(code.join("\n"))}</code></pre>`);
+    const languageClass = codeLanguage ? ` class="language-${escapeHtml(codeLanguage)}"` : "";
+    html.push(`<pre><code${languageClass}>${highlightCode(code.join("\n"), codeLanguage)}</code></pre>`);
   }
   return html.join("\n");
 }
@@ -218,6 +258,66 @@ function updateSections() {
   sectionSelect.innerHTML = sections
     .map((section) => `<option value="${escapeHtml(section)}" ${section === state.section ? "selected" : ""}>${escapeHtml(section)}</option>`)
     .join("");
+}
+
+function encodeStateValue(value) {
+  return encodeURIComponent(value || "");
+}
+
+function decodeStateValue(value) {
+  try {
+    return decodeURIComponent(value || "");
+  } catch (_error) {
+    return "";
+  }
+}
+
+function parseUrlState() {
+  const params = new URLSearchParams(window.location.hash.replace(/^#\/?/, ""));
+  const next = {
+    topic: decodeStateValue(params.get("topic")) || "All",
+    section: decodeStateValue(params.get("section")) || "All",
+    query: decodeStateValue(params.get("q")),
+    selectedId: decodeStateValue(params.get("note")) || null,
+  };
+
+  if (next.topic !== "All" && !notes.some((note) => note.topic === next.topic)) {
+    next.topic = "All";
+    next.section = "All";
+  }
+
+  if (next.section !== "All" && !notes.some((note) => note.topic === next.topic && note.section === next.section)) {
+    next.section = "All";
+  }
+
+  if (next.selectedId && !byId.has(next.selectedId)) {
+    next.selectedId = null;
+  }
+
+  return next;
+}
+
+function applyUrlState() {
+  Object.assign(state, parseUrlState());
+  searchInput.value = state.query;
+}
+
+function stateHash() {
+  const params = new URLSearchParams();
+  if (state.topic !== "All") params.set("topic", state.topic);
+  if (state.section !== "All") params.set("section", state.section);
+  if (state.query) params.set("q", state.query);
+  if (state.selectedId) params.set("note", state.selectedId);
+  const value = params.toString();
+  return value ? `#/${value}` : "";
+}
+
+function syncUrl() {
+  if (isRestoringUrl) return;
+  const nextHash = stateHash();
+  const currentHash = window.location.hash;
+  if (currentHash === nextHash) return;
+  history.pushState(null, "", `${window.location.pathname}${window.location.search}${nextHash}`);
 }
 
 function matchesQuery(note) {
@@ -338,6 +438,7 @@ function render() {
   const items = filteredNotes();
   renderNoteList(items);
   renderReader();
+  syncUrl();
 }
 
 topicNav.addEventListener("click", (event) => {
@@ -377,5 +478,13 @@ noteList.addEventListener("click", (event) => {
   render();
 });
 
+window.addEventListener("hashchange", () => {
+  isRestoringUrl = true;
+  applyUrlState();
+  render();
+  isRestoringUrl = false;
+});
+
+applyUrlState();
 renderStats();
 render();

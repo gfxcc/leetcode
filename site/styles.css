@@ -395,6 +395,32 @@ select:focus {
   padding: 16px;
 }
 
+.reader pre code.hljs {
+  background: transparent;
+  padding: 0;
+}
+
+.tok-keyword {
+  color: #ff7b72;
+}
+
+.tok-string {
+  color: #a5d6ff;
+}
+
+.tok-number {
+  color: #79c0ff;
+}
+
+.tok-comment {
+  color: #8b949e;
+  font-style: italic;
+}
+
+.tok-builtin {
+  color: #d2a8ff;
+}
+
 .reader code {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   font-size: 13px;
