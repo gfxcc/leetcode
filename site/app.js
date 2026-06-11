@@ -1,5 +1,10 @@
 const payload = window.LEETCODE_NOTES || { notes: [] };
 const notes = payload.notes;
+const repository = {
+  owner: "gfxcc",
+  name: "leetcode",
+  branch: "main",
+};
 
 const state = {
   topic: "All",
@@ -31,6 +36,14 @@ function escapeHtml(value) {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+function encodePath(path) {
+  return path.split("/").map(encodeURIComponent).join("/");
+}
+
+function githubEditUrl(note) {
+  return `https://github.com/${repository.owner}/${repository.name}/edit/${repository.branch}/${encodePath(note.path)}`;
 }
 
 function linkify(text) {
@@ -424,9 +437,14 @@ function renderReader() {
   if (!note) return;
   reader.innerHTML = `
     <header class="reader-header">
-      <p class="eyebrow">${escapeHtml(note.topic)} / ${escapeHtml(note.section)}</p>
-      <h2>${escapeHtml(note.displayTitle)}</h2>
-      <p class="meta">${escapeHtml(note.path)}</p>
+      <div class="reader-title-row">
+        <div>
+          <p class="eyebrow">${escapeHtml(note.topic)} / ${escapeHtml(note.section)}</p>
+          <h2>${escapeHtml(note.displayTitle)}</h2>
+          <p class="meta">${escapeHtml(note.path)}</p>
+        </div>
+        <a class="edit-link" href="${githubEditUrl(note)}" target="_blank" rel="noreferrer">Edit</a>
+      </div>
     </header>
     ${renderMarkdown(readerMarkdown(note))}
   `;

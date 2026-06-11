@@ -362,6 +362,38 @@ select:focus {
   border-bottom: 1px solid var(--line);
 }
 
+.reader-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.reader-title-row > div {
+  min-width: 0;
+}
+
+.edit-link {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--accent-strong);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.edit-link:hover {
+  border-color: rgba(15, 118, 110, 0.45);
+  background: #f1f8f7;
+}
+
 .reader h2 {
   margin: 0 0 10px;
   font-size: 28px;
@@ -484,6 +516,14 @@ select:focus {
 @media (max-width: 560px) {
   .stats {
     grid-template-columns: 1fr;
+  }
+
+  .reader-title-row {
+    display: grid;
+  }
+
+  .edit-link {
+    width: 100%;
   }
 
   .reader {
