@@ -1629,7 +1629,7 @@ O(1) to push and pop at end.
 Recursive! Recursive! Recursive!  
 
 > pre/in/post order traversal   
-https://yonglife.com/2019/05/04/binary-tree-traversal-updated/
+https://gfxcc.github.io/2019/05/04/binary-tree-traversal-updated/
 
 > Recursive to Non-recursive   
 
@@ -2940,7 +2940,7 @@ class BIT:
 
 ### Cycle Detection
 
-https://yonglife.com/2020/08/22/Detect-Cycle-in-a-Graph/
+https://gfxcc.github.io/2020/08/22/Detect-Cycle-in-a-Graph/
 
 ### Euler path
 
@@ -3205,8 +3205,8 @@ def topo_sort(n: int, edges: List[List[int]]):
 
 ### Dijkstra_Bellman-Ford
 
-[Graph-Dijkstra](https://yonglife.com/2019/06/01/Graph-Dijkstra/)
-[Bellman-Ford](https://yonglife.com/2019/06/01/Graph-Bellman-Ford/)
+[Graph-Dijkstra](https://gfxcc.github.io/2019/06/01/Graph-Dijkstra/)
+[Bellman-Ford](https://gfxcc.github.io/2019/06/01/Graph-Bellman-Ford/)
 
 - 1514. Path with Maximum Probability
 
@@ -3285,7 +3285,7 @@ def topo_sort(n: int, edges: List[List[int]]):
 
 ### Minimal-Spinning-Tree
 
-https://yonglife.com/2017/04/24/Minimum-spanning-tree/
+https://gfxcc.github.io/2017/04/24/Minimum-spanning-tree/
 
 ### Tarjan's algorithm
 

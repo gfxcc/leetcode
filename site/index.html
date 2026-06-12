@@ -7,7 +7,22 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <aside class="sidebar" aria-label="Topic navigation">
+    <div class="mobile-topbar">
+      <button id="menuToggle" class="icon-button" type="button" aria-label="Open topic navigation" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div>
+        <strong>LeetCode Roadmap</strong>
+        <span id="mobileMeta">Local notes</span>
+      </div>
+      <button id="focusSearch" class="icon-button search-icon" type="button" aria-label="Focus search"></button>
+    </div>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <aside id="sidebar" class="sidebar" aria-label="Topic navigation">
       <div class="brand">
         <div class="brand-mark">LC</div>
         <div>

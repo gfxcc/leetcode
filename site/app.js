@@ -22,6 +22,11 @@ const reader = document.querySelector("#reader");
 const listTitle = document.querySelector("#listTitle");
 const resultCount = document.querySelector("#resultCount");
 const generatedMeta = document.querySelector("#generatedMeta");
+const mobileMeta = document.querySelector("#mobileMeta");
+const menuToggle = document.querySelector("#menuToggle");
+const sidebar = document.querySelector("#sidebar");
+const overlay = document.querySelector("#overlay");
+const focusSearch = document.querySelector("#focusSearch");
 
 const byId = new Map(notes.map((note) => [note.id, note]));
 let isRestoringUrl = false;
@@ -213,6 +218,7 @@ function renderStats() {
     .map(([label, value]) => `<div class="stat"><strong>${value}</strong><span>${label}</span></div>`)
     .join("");
   generatedMeta.textContent = `${overviewCount} overview pages`;
+  if (mobileMeta) mobileMeta.textContent = `${overviewCount} overview pages`;
 }
 
 function countFor(topic, section = "All") {
@@ -459,6 +465,20 @@ function render() {
   syncUrl();
 }
 
+function closeSidebar() {
+  if (!sidebar || !overlay || !menuToggle) return;
+  sidebar.classList.remove("open");
+  overlay.hidden = true;
+  menuToggle.setAttribute("aria-expanded", "false");
+}
+
+function openSidebar() {
+  if (!sidebar || !overlay || !menuToggle) return;
+  sidebar.classList.add("open");
+  overlay.hidden = false;
+  menuToggle.setAttribute("aria-expanded", "true");
+}
+
 topicNav.addEventListener("click", (event) => {
   const button = event.target.closest("[data-topic]");
   if (!button) return;
@@ -466,6 +486,7 @@ topicNav.addEventListener("click", (event) => {
   state.section = button.dataset.section || "All";
   state.selectedId = null;
   render();
+  closeSidebar();
 });
 
 searchInput.addEventListener("input", (event) => {
@@ -494,6 +515,31 @@ noteList.addEventListener("click", (event) => {
   if (!button) return;
   state.selectedId = button.dataset.id;
   render();
+});
+
+if (menuToggle) {
+  menuToggle.addEventListener("click", () => {
+    if (sidebar.classList.contains("open")) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  });
+}
+
+if (overlay) {
+  overlay.addEventListener("click", closeSidebar);
+}
+
+if (focusSearch) {
+  focusSearch.addEventListener("click", () => {
+    openSidebar();
+    window.setTimeout(() => searchInput.focus(), 190);
+  });
+}
+
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeSidebar();
 });
 
 window.addEventListener("hashchange", () => {
