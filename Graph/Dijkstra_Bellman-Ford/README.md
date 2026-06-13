@@ -44,3 +44,43 @@ def shortest_path(edges: List[List[int]], origin: int, dest: int) -> List[int]:
 Time: `O(E log V)`, Space: `O(V + E)`.
 
 ## [Bellman-Ford](https://gfxcc.github.io/2019/06/01/Graph-Bellman-Ford/)
+
+
+```python
+def shortest_path(edges: List[List[int]], origin: int, dest: int) -> List[int]:
+    vertexs = {u for u, v, _ in edges} | { v for u, v, _ in edges}
+
+    prev, dist = {}, defaultdict(lambda: math.inf)
+    dist[origin] = 0
+    # 1. relax edges
+    for _ in range(len(vertexs) - 1):
+        updated = False
+        for u, v, w in edges:
+            if w + dist[u] < dist[v]:
+                prev[v] = u
+                dist[v] = w + dist[u]
+                updated = True
+        if not updated:
+            break # Quick exit
+
+    # 2. detect negative cycle
+    for u, v, w in edges:
+        if dist[u] + w < dist[v]:
+            return [] # negative cycle
+    
+    # 3. build path
+    if dist[dest] == math.inf:
+        return []
+    path = []
+    curr = dest
+    while curr != origin:
+        path.append(curr)
+        curr = prev[curr]
+    return [origin] + path[::-1]
+```
+
+Time: `O(VE)`, Space: `O(V)`.
+
+The extra negative-cycle check is one more pass over all edges, so it does not
+change the overall time complexity. The quick exit can make the average case
+faster, but the worst case is still `O(VE)`.
