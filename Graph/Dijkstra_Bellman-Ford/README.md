@@ -9,10 +9,12 @@ negative edge weights, use Bellman-Ford instead.
 def shortest_path(edges: List[List[int]], origin: int, dest: int) -> List[int]:
     """Return one shortest path from origin to dest, or [] if unreachable."""
     graph = defaultdict(dict)
+    # 1. Build graph
     # Keep minimum weight edge if multiple edges exist between same vertices
     for u, v, w in edges:
         graph[u][v] = min(graph[u].get(v, math.inf), w)
 
+    # 2. Release edges
     heap = [(0, origin)]
     dist, prev = {origin: 0}, {origin: None}
     while heap:
@@ -27,11 +29,14 @@ def shortest_path(edges: List[List[int]], origin: int, dest: int) -> List[int]:
                 prev[v] = u
                 heapq.heappush(heap, (alt_dist, v))
 
+    # 3. Build path
+    if dest not in prev:
+        return []
     path, curr = [], dest
     while curr is not None:
         path.append(curr)
         curr = prev[curr]
-    return path[::-1] if dest in prev else []
+    return path[::-1]
 ```
 
 **Note:** For optimization, you can add an early termination condition (`if u == dest: break`) when you only need the shortest path to a specific destination rather than computing shortest paths to all reachable nodes.
